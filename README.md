@@ -1,16 +1,119 @@
-# Vue 3 + TypeScript + Vite
+这是一个使用unocss+iconify的示例代码库，解决vue3开发中图标、svg和样式的问题
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# Iconify使用
 
-## Recommended IDE Setup
+## 安装
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+#### iconify/json图标集
 
-## Type Support For `.vue` Imports in TS
+```Bash
+pnpm add -D @iconify/json
+```
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+包括所有图表集
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+#### unplugin-icons按需引入
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+```Bash
+pnpm add -D unplugin-icons
+```
+
+这个插件会按需引入我们需要的图标，这样就不会把所有的图标120M+都打包进去
+
+#### unplugin-vue-components 组件方式使用
+
+```Bash
+pnpm add -D unplugin-vue-components
+```
+
+这个库可以让我们使用组件的方式使用图标
+
+#### @iconify/vue 组件方式使用
+
+```Bash
+pnpm add @iconify/vue
+```
+
+这个也是以组件的方式使用图标，和上面的区别是组件名称固定，通过传入icon属性来区分图标，有利于我们进行组件封装
+
+#### vite-plugin-svg-icons 使用本地Svg
+
+```Bash
+pnpm add vite-plugin-svg-icons -D
+```
+
+引入本地svg文件使用
+
+# Unocss使用
+## 安装
+
+#### unocss
+
+```Bash
+pnpm add -D unocss
+```
+
+## 使用unocss
+
+`vite.config.ts`配置
+
+```TypeScript
+// vite.config.ts
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    UnoCSS(),
+  ],
+})
+```
+
+创建`uno.config.ts`文件
+
+```TypeScript
+// uno.config.ts
+import {
+  defineConfig,
+  presetUno,
+  presetIcons,
+  presetAttributify,
+  presetTypography,
+} from 'unocss';
+
+export default defineConfig({
+  // ...UnoCSS options
+  presets: [
+    presetUno(),
+    presetAttributify(),
+    presetIcons(),
+    presetTypography(),
+  ],
+});
+
+```
+
+`main.ts`中导入`uno.css`
+
+```TypeScript
+// main.ts
+import 'virtual:uno.css'
+```
+
+在Vue文件中使用
+
+```Vue
+<template>
+  <div
+    underline
+    font-size-9
+    text-center
+    font-extrabold
+    animate-bounce-in-down
+    animate-count-infinite
+  >
+    Unocss + Vite + Vue3
+  </div>
+</template>
+```
+
